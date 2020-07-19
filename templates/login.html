@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Open Binder Web App</title>
+    </head>
+    <body>
+        <h1>Open Binder Login</h1>
+        {% if msg %}
+        <h2>{{msg}}</h2>
+        {% endif %}
+        <form action='login.html' method="POST">
+            Username: <input type="text" name="username" /> <br />
+            Password: <input type="password" name="password" /> <br />
+            <input type="submit" />
+        </form>
+    </body>
+</html>
