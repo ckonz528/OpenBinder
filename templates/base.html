@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Open Binder Web App</title>
+        <link rel='stylesheet' href='{{url_for("static", filename="default.css")}}' />
+        <link rel='stylesheet' href='{{url_for("static", filename="fonts.css")}}' />
+    </head>
+    <body>
+        <div class='navbar'>
+            <a href="main.html">Home</a>
+            <a href="login.html">Login</a>
+        </div>
+        {% block content %} {% endblock %}
+    </body>
+</html>

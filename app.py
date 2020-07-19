@@ -4,7 +4,8 @@ from time import time
 app = Flask(__name__)
 
 @app.route('/')
-def helloWorld():
+@app.route('/main.html')
+def home():
     return render_template('main.html')
 
 @app.route('/login.html', methods=['GET', 'POST'])
