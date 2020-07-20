@@ -5,11 +5,11 @@
         <link rel='stylesheet' href='{{url_for("static", filename="css/fonts.css")}}' />
     </head>
     <body>
-        <div id="header-wrapper">
+        <!-- <div id="header-wrapper"> -->
             <div id="header" class="container">
-                <div id="logo">
+                <!-- <div id="logo">
                     <h1><span class="fa fa-bug"></span><a href="#">Untamed</a></h1>
-                </div>
+                </div> -->
                 <div id="menu">
                     <ul>
                         <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
@@ -20,7 +20,15 @@
                     </ul>
                 </div>
             </div>
+        <!-- </div> -->
+        <div id="page" class="container">
+            <div id="content">
+                {% block content %} {% endblock %}
+            </div>
+            <div id="sidebar">
+                
+            </div>
         </div>
-        {% block content %} {% endblock %}
+        
     </body>
 </html>
