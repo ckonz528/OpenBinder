@@ -4,9 +4,9 @@ from time import time
 app = Flask(__name__)
 
 @app.route('/')
-@app.route('/main.html')
+@app.route('/intro.html')
 def home():
-    return render_template('main.html')
+    return render_template('intro.html')
 
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():

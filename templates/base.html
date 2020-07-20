@@ -1,13 +1,25 @@
 <html>
     <head>
         <title>Open Binder Web App</title>
-        <link rel='stylesheet' href='{{url_for("static", filename="default.css")}}' />
-        <link rel='stylesheet' href='{{url_for("static", filename="fonts.css")}}' />
+        <link rel='stylesheet' href='{{url_for("static", filename="css/default.css")}}' />
+        <link rel='stylesheet' href='{{url_for("static", filename="css/fonts.css")}}' />
     </head>
     <body>
-        <div class='navbar'>
-            <a href="main.html">Home</a>
-            <a href="login.html">Login</a>
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><span class="fa fa-bug"></span><a href="#">Untamed</a></h1>
+                </div>
+                <div id="menu">
+                    <ul>
+                        <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
+                        <li><a href="#" accesskey="2" title="">Our Clients</a></li>
+                        <li><a href="#" accesskey="3" title="">About Us</a></li>
+                        <li><a href="#" accesskey="4" title="">Careers</a></li>
+                        <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
         {% block content %} {% endblock %}
     </body>
