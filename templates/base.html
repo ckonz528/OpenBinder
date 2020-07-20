@@ -2,7 +2,8 @@
     <head>
         <title>Open Binder Web App</title>
         <link rel='stylesheet' href='{{url_for("static", filename="css/default.css")}}' />
-        <link rel='stylesheet' href='{{url_for("static", filename="css/fonts.css")}}' />
+        <link rel='stylesheet' href='{{url_for("static", filename="css/fonts.css")}}'>
+        <script type='text/javascript' src='{{url_for("static", filename="js/dynamic.js")}}'></script>'
     </head>
     <body>
         <!-- <div id="header-wrapper"> -->
@@ -12,21 +13,28 @@
                 </div> -->
                 <div id="menu">
                     <ul>
-                        <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
-                        <li><a href="#" accesskey="2" title="">Our Clients</a></li>
-                        <li><a href="#" accesskey="3" title="">About Us</a></li>
-                        <li><a href="#" accesskey="4" title="">Careers</a></li>
-                        <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+                        <li class="menu_item current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
+                        <li class="menu_item"><a href="#" accesskey="2" title="">Our Clients</a></li>
+                        <li class="menu_item"><a href="#" accesskey="3" title="">About Us</a></li>
+                        <li class="menu_item"><a href="#" accesskey="4" title="">Careers</a></li>
+                        <li class="menu_item"><a href="#" accesskey="5" title="">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
         <!-- </div> -->
         <div id="page" class="container">
+            
+            <div class="title">
+                <h2>Welcome to Open Binder</h2>
+                <span class="byline">This is some pretty cool text</span>
+            </div>
+            
+
             <div id="content">
                 {% block content %} {% endblock %}
             </div>
             <div id="sidebar">
-                
+                {% block sidebar %} {% endblock %}
             </div>
         </div>
         
