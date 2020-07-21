@@ -32,9 +32,23 @@ function setupAccordions() {
     }
 }
 
+function handleSticky() {
+    var header = document.getElementById("header-wrapper");
+    var sticky = header.offsetTop;
+    if (window.pageYOffset > sticky)
+        header.classList.add("sticky");
+    else
+        header.classList.remove("sticky");
+}
+
+function setupStickyHeader() {
+    window.onscroll = handleSticky;
+}
+
 function setupDynamicContent() {
     setupMenuActiveHighlight();
     setupAccordions();
+    // setupStickyHeader();
 }
 
 document.addEventListener("DOMContentLoaded", setupDynamicContent);

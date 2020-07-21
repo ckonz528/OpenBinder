@@ -9,7 +9,7 @@ body
 	margin: 0px;
 	padding: 0px;
 	background: #2b2b2b;
-	background-image: url(images/pic01.jpg);
+	background-image: url(images/bookshelf.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -373,7 +373,10 @@ ul.contact li a.icon-rss:before
 	
 #header-wrapper
 {
-	background: #2b2b2b;
+	background: #454445FF;
+	border-bottom: #F2762E;
+	border-width: 0 0 5px 0;
+	border-style: solid;
 }
 
 #header
@@ -381,6 +384,18 @@ ul.contact li a.icon-rss:before
 	position: relative;
 	height: 100px;
 }
+
+.sticky 
+{
+	position: fixed;
+	top: 0;
+	width: 100%
+}
+
+/* #page
+{
+	margin-top: 10em;
+} */
 
 /*********************************************************************************/
 /* Logo                                                                          */
@@ -491,6 +506,7 @@ ul.contact li a.icon-rss:before
 		background-image: url(images/pic.jpg);
 		background-position: center;
 		background-size: cover;
+		background-color: #454445C0;
 	}
 
 
@@ -504,13 +520,13 @@ ul.contact li a.icon-rss:before
 	overflow: hidden;
 	width: 1000px;
 	text-align: center;
-	color: rgba(255,255,255,.7);
+	color: #FFF;
 	font-size: 1.5em;
 }
 
 #banner a
 {
-	color: rgba(255,255,255,.9);
+	color: #FFF;
 }
 
 #banner h2
@@ -553,7 +569,7 @@ ul.contact li a.icon-rss:before
 #page
 {
 	overflow: hidden;
-	padding: 6em 0em 0em 0em;
+	padding: 2em 0em 0em 0em;
 	background: #FFF;
 	text-align: center;
 }
