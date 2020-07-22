@@ -1,7 +1,20 @@
 from flask import *
+from flask_sqlalchemy import SQLAlchemy
 from time import time
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    privelege = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f'User {self.privelege}@{self.id} ({self.username})'
 
 @app.route('/')
 @app.route('/intro.html')
