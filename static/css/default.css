@@ -573,11 +573,11 @@ ul.contact li a.icon-rss:before
 	background: #FFF;
 	text-align: center;
 }
-
+/* 
 #page .button
 {
 	margin-top: 2em;
-}
+} */
 
 /*********************************************************************************/
 /* Content                                                                       */
@@ -1022,19 +1022,34 @@ input:focus {
 	height: 105px;
 }
 
-#login {
-	padding-top: 1em;
-	padding-bottom: 1em;
+#box-wrapper {
+	text-align: center;
+}
+
+#box {
+	padding: 1em 1em;
 	margin-top: 10em;
 	background-color: #454445;
 	text-align: center;
-	width: 350px;
+	display: inline-block;
 	color: #FFF;
 	border-radius: 15px;
 }
-#login h1 {
+#box h1 {
 	color: #FFF;
 }
-#login input {
-	text-align: right;
+
+#box table {
+	color: #FFF;
+	font-weight: 300;
+}
+
+#flash {
+	text-align: center;
+}
+
+#flash .message {
+	color: #F2762E;
+	font-weight: 600;
+	background-color: #454445C0;
 }
