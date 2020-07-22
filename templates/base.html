@@ -24,6 +24,15 @@
             </div>
         </div>
         <div id="spacer"></div>
+        <div id="flash">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="message" role="alert">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
         {% block pageContent %} {% endblock %}
         
