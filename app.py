@@ -32,7 +32,7 @@ def login():
             session['logged_in'] = True
             session['admin'] = admin
             return redirect(url_for('secret'))
-        return render_template('login.html', msg='Login failed :(')
+        return render_template('login.html', msg='Login failed')
     return render_template('login.html')
 
 @app.route('/secret.html')
