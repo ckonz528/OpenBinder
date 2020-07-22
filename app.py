@@ -42,4 +42,3 @@ def checkLogin(username, password):
 app.secret_key = str(time())
 if __name__ == "__main__":
     app.run(debug=True)
-
