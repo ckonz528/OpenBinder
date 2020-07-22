@@ -370,7 +370,7 @@ ul.contact li a.icon-rss:before
 /*********************************************************************************/
 /* Header                                                                        */
 /*********************************************************************************/
-	
+
 #header-wrapper
 {
 	background: #454445FF;
@@ -392,10 +392,10 @@ ul.contact li a.icon-rss:before
 	width: 100%
 }
 
-/* #page
+#page
 {
 	margin-top: 10em;
-} */
+}
 
 /*********************************************************************************/
 /* Logo                                                                          */
@@ -1016,4 +1016,25 @@ input:focus {
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-in-out;
+}
+
+#spacer {
+	height: 105px;
+}
+
+#login {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	margin-top: 10em;
+	background-color: #454445;
+	text-align: center;
+	width: 350px;
+	color: #FFF;
+	border-radius: 15px;
+}
+#login h1 {
+	color: #FFF;
+}
+#login input {
+	text-align: right;
 }

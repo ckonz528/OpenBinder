@@ -2,16 +2,22 @@
 
 {% block pageContent %}
 
-<div id="page" class="container">
-    <h1>Open Binder Login</h1>
-    {% if msg %}
-    <h2>{{msg}}</h2>
-    {% endif %}
-    <form action='login.html' method="POST">
-        Username: <input type="text" class="input rounded" name="username" /> <br />
-        Password: <input type="password" class="input rounded" name="password" /> <br />
-        <input type="submit" value="Login!" class="button" />
-    </form>
+<!-- <div id="header-featured"> -->
+<!-- </div> -->
+<div id="login" class="container">
+    <!-- <div id="content"> -->
+        <h1>Open Book Login</h1>
+        {% if msg %}
+        <h2>{{msg}}</h2>
+        {% endif %}
+        <br />
+        <form action='login.html' method="POST">
+            Username: <input type="text" class="input rounded" name="username" /> <br />
+            Password: <input type="password" class="input rounded" name="password" /> <br />
+            <br />
+            <input type="submit" value="Login!" class="button" />
+        </form>
+    <!-- </div> -->
 </div>
 
 {% endblock %}
