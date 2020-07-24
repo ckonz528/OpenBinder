@@ -10,6 +10,7 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 db = SQLAlchemy(app)
 
+
 def md5encode(text):
     return md5(bytes(text, encoding='utf-8')).digest().hex()
 
@@ -90,6 +91,12 @@ def uploader():
 
         # get the filepath to save it to
         name, ext = os.path.splitext(file.filename)
+        
+        # verify that the file extension is valid
+        if ext[1:].lower() not in ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg', 'gif', 'ppt', 'pptx', 'xlsx']:
+            flash(f'File type {ext} not supported!')
+            return redirect(request.url)
+        
         unique_id = name + str(session['logged_in'])
         filehash = md5encode(unique_id) + ext
         path = os.path.join(app.config['UPLOAD_FOLDER'], filehash)
@@ -119,17 +126,58 @@ def view_file(filename):
 @app.route('/delete/<filename>')
 def delete_file(filename):
     note_to_delete = Note.query.filter_by(filehash=filename).first()
-    print(note_to_delete)
     if note_to_delete is None:
         flash('Could not find file to delete!')
         return redirect(url_for('list_notes'))
 
     db.session.delete(note_to_delete)
     db.session.commit()
-    os.remove(os.path.join('uploads', filename))
+    
+    try:
+        os.remove(os.path.join('uploads', filename))
+    except:
+        pass
+
     flash('Note deleted!')
 
     return redirect(url_for('list_notes'))
+
+
+@app.route('/edit/<filename>')
+def edit_file(filename):
+    if not session.get('logged_in'):
+        flash('You need to be logged in to view this!')
+        return redirect(url_for('login'))
+
+    note_to_edit = Note.query.filter_by(filehash=filename).first()
+    if note_to_edit is None:
+        flash('Could not find note to edit!')
+        return redirect(url_for('list_notes'))
+    
+    if note_to_edit.user_id != session.get('logged_in'):
+        flash('You do not have permission to edit this note!')
+        return redirect(url_for('list_notes'))
+
+    return render_template('edit.html', note=note_to_edit)
+    
+@app.route('/update', methods=['POST'])
+def update_note():
+    if not session.get('logged_in'):
+        flash('You need to be logged in to edit notes!')
+        return redirect(url_for('login'))
+
+    note_id = request.form['id']
+    note = Note.query.get(note_id)
+    if note.user_id != session.get('logged_in'):
+        flash('You do not have permission to edit this note!')
+        return redirect(url_for('list_notes'))
+
+    note.tags = request.form['tags']
+    db.session.commit()
+    
+    flash('Note successfully edited!')
+    return redirect(url_for('list_notes'))
+    
 
 
 @app.route('/list.html')

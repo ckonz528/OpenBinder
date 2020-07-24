@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block pageContent %}
+
+<div id="box-wrapper">
+    <div id="box">
+        <h1>Edit Note Tags</h1>
+        <h2>{{note.filename}}</h2>
+        <form action="/update" method="POST">
+            <input type="hidden" name="id" value="{{note.id}}" />
+            <textarea class="input" name="tags">{{note.tags}}</textarea><br />
+            <input type="submit" class="button" value="Update Tags" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}
