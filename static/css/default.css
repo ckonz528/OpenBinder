@@ -512,11 +512,6 @@ ul.contact li a.icon-rss:before
 	}
 
 
-
-#banner-wrapper
-{
-}
-
 #banner
 {
 	overflow: hidden;
@@ -1008,7 +1003,7 @@ input:focus {
 	background: #F2762E;
 	cursor: pointer;
 	padding: 1.3em 18px;
-	letter-spacing: 0.20 em;
+	letter-spacing: 0.20em;
 	transition: 0.4s;
 	text-align: left;
 	text-decoration: none;
@@ -1063,6 +1058,7 @@ input:focus {
 
 #flash {
 	text-align: center;
+	font-size: 1.5em;
 }
 
 #flash .message {
@@ -1074,5 +1070,8 @@ input:focus {
 #introPage
 {
 	min-height: 50%;
+	background-color: #FFF;
+	font-size: 1.5em;
+	text-align: center;
 	padding: 2em 2em;
 }
