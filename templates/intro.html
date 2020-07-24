@@ -4,12 +4,12 @@
 <div id="header-featured">
     <div id="banner" class="container">
         <h2>Welcome to the Open Book Project!</h2>
-        <p>Here is some text :D</p>
+        <p>Your way to share and organize notes and documents</p>
+        <a href="login.html" class="button">Get Started</a>
     </div>
 </div>
 
-<div id="page" class="container">
-    <!-- <div id="content"> -->
+<div id="introPage" class="container">
         <div id="header-featured">
             <div id="banner-wrapper">
                 <div id="banner" class="container">
@@ -19,20 +19,5 @@
                 </div>
             </div>
         </div>
-    <!-- </div> -->
-    <div id="sidebar">
-        <div class="accordion">
-            {%for i in range(50)%}
-                <button class="accordion_tab">Section {{i}}</button>
-                <div class="accordion_content">
-                    Accordion content for section {{i}}
-                </div>
-                {%endfor%}
-                <!-- <button class="accordion_tab">Section 2</button>
-                <div class="accordion_content">
-                    Accordion content for section 2
-                </div> -->
-            </div>
-    </div>
 </div>
 {% endblock %}
