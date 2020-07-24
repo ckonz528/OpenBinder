@@ -27,6 +27,7 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(256), nullable=False)
     filehash = db.Column(db.String(128), nullable=False, unique=True)
+    tags = db.Column(db.Text())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
@@ -105,6 +106,7 @@ def uploader():
         note = Note(
             filename=file.filename,
             filehash=filehash,
+            tags=request.form['tags'],
             user_id=session['logged_in'])
         db.session.add(note)
         db.session.commit()
@@ -142,6 +144,12 @@ def list_notes():
         return render_template('list.html', notes=current_user.notes)
     flash('You need to be logged in to view this!')
     return redirect(url_for('login'))
+
+
+@app.route('/search.html')
+def search_notes():
+    all_notes = Note.query.all()
+    return render_template('search.html', notes=all_notes)
 
 
 def checkLogin(username, password):
