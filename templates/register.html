@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block pageContent %}
+<div id="box-wrapper">
+    <div id="box">
+        <h1>Register for an Open Book Account</h1>
+        <br />
+        <form action="register.html" method="POST">
+            <table>
+                <tr>
+                    <td>Username (5-20 characters): </td>
+                    <td><input type="text" class="input rounded" name="username" /></td>
+                </tr>
+                <tr>
+                    <td>Password (min 5 characters): </td>
+                    <td><input type="password" class="input rounded" name="password"/></td>
+                </tr>
+                <tr>
+                    <td>Confirm Password: </td>
+                    <td><input type="password" class="input rounded" name="confirm" /></td>
+                </tr>
+            </table>
+            <br />
+            <input type="submit" value="Register!" class="button" />
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -7,9 +7,6 @@
 <div id="box-wrapper">
     <div id="box">
         <h1>Open Book Login</h1>
-        {% if msg %}
-        <h3>{{msg}}</h3>
-        {% endif %}
         <br />
         <form action='login.html' method="POST">
             <table>
@@ -21,7 +18,8 @@
                 </tr>
             </table>
             <br />
-            <input type="submit" value="Login" class="button" />
+            <input type="submit" value="Login" class="button" /><br />
+            <span style="color: #F2762E">Don't have an account yet? <a href="register.html">Register</a> now!</span>
         </form>
     </div>
 </div>

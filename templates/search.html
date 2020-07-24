@@ -5,11 +5,15 @@
 <script type="text/javascript" src="{{url_for('static', filename='js/filtering.js')}}"></script>
 
 <div id="page" class="content">
-    <h1>Search all notes</h1>
-    Filter: <input type="text" id="notes-filter" /><br />
+    <h1>Search all notes</h1><br />
+    Filter: <input type="text" id="notes-filter" /><br /><br />
     <div class="accordion" id="results">
         {% for note in notes %}
-        <button class="accordion_tab">{{note.filename}}</button>
+        <button class="accordion_tab">
+            {{note.filename}}
+            <span style="color: #FFF; padding-left: 1em; font-weight: 300;"><em>{{note.uploader.username}}</em></span>
+            <span style="color: #FFF; float: right;"><a target="_blank" href="view/{{note.filehash}}">View</a></span>
+        </button>
         <div class="accordion_content">
             <ul id="tags">
                 {% for tag in note.tags.split(',') %}

@@ -10,6 +10,9 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 db = SQLAlchemy(app)
 
+def md5encode(text):
+    return md5(bytes(text, encoding='utf-8')).digest().hex()
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +45,7 @@ def favicon():
 @app.route('/')
 @app.route('/intro.html')
 def home():
-    return render_template('intro.html')
+    return render_template('intro.html', page='intro')
 
 
 @app.route('/login.html', methods=['GET', 'POST'])
@@ -57,9 +60,10 @@ def login():
             user_id, admin = success
             session['logged_in'] = user_id
             session['admin'] = admin
+            session['username'] = request.form['username']
             return redirect(url_for('list_notes'))
         flash('Login failed :(')
-    return render_template('login.html')
+    return render_template('login.html', page='login')
 
 
 @app.route('/logout')
@@ -70,15 +74,6 @@ def logout():
         flash('Successfully logged out')
     else:
         flash('You are not logged in')
-    return redirect(url_for('login'))
-
-
-@app.route('/secret.html')
-def secret():
-    if session.get('logged_in'):
-        if session['admin']:
-            return 'Top secret admin info!'
-        return 'Secret non-admin info!'
     return redirect(url_for('login'))
 
 
@@ -96,7 +91,7 @@ def uploader():
         # get the filepath to save it to
         name, ext = os.path.splitext(file.filename)
         unique_id = name + str(session['logged_in'])
-        filehash = md5(bytes(unique_id, encoding='utf-8')).digest().hex() + ext
+        filehash = md5encode(unique_id) + ext
         path = os.path.join(app.config['UPLOAD_FOLDER'], filehash)
 
         # save the file
@@ -113,7 +108,7 @@ def uploader():
 
         # serve the uploaded file
         return redirect(url_for('list_notes'))
-    return render_template('upload.html')
+    return render_template('upload.html', page='upload')
 
 
 @app.route('/view/<filename>')
@@ -141,20 +136,47 @@ def delete_file(filename):
 def list_notes():
     if session.get('logged_in'):
         current_user = User.query.get(session['logged_in'])
-        return render_template('list.html', notes=current_user.notes)
+        return render_template('list.html', notes=current_user.notes, page='list')
     flash('You need to be logged in to view this!')
     return redirect(url_for('login'))
 
 
 @app.route('/search.html')
 def search_notes():
-    all_notes = Note.query.all()
-    return render_template('search.html', notes=all_notes)
+    if session.get('logged_in'):
+        all_notes = Note.query.all()
+        return render_template('search.html', notes=all_notes, page='search')
+    flash('You need to be logged in to view this!')
+    return redirect(url_for('login'))
 
+
+@app.route('/register.html', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm = request.form['confirm']
+
+        if User.query.filter_by(username=username).first() is not None:
+            flash('A user by that name already exists!')
+        elif len(username) > 20:
+            flash('Username too long!')
+        elif len(username) < 5:
+            flash('Username too short!')
+        elif len(password) < 5:
+            flash('Password too short!')
+        elif password != confirm:
+            flash('Passwords must match!')
+        else:
+            user = User(username=username, password=md5encode(password), privilege=0)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('login'))
+    return render_template('register.html')
 
 def checkLogin(username, password):
     user = User.query.filter_by(username=username).first()
-    if user is not None and user.password == password:
+    if user is not None and user.password == md5encode(password):
         return user.id, user.privilege
 
 

@@ -14,11 +14,16 @@
                 </div>
                 <div id="menu">
                     <ul>
-                        <li class="menu_item current_page_item"><a href="intro.html" accesskey="1" title="">Homepage</a></li>
-                        <li class="menu_item"><a href="#" accesskey="2" title="">Our Clients</a></li>
-                        <li class="menu_item"><a href="#" accesskey="3" title="">About Us</a></li>
-                        <li class="menu_item"><a href="#" accesskey="4" title="">Careers</a></li>
-                        <li class="menu_item"><a href="login.html" accesskey="5" title="">Login</a></li>
+                        <li class="menu_item {% if page == 'intro' %} current_page_item {% endif %}"><a href="intro.html" accesskey="1" title="">Home</a></li>
+                        <li class="menu_item {% if page == 'list' %} current_page_item {% endif %}"><a href="list.html" accesskey="2" title="">Manage</a></li>
+                        <li class="menu_item {% if page == 'upload' %} current_page_item {% endif %}"><a href="upload.html" accesskey="3" title="">Upload</a></li>
+                        <li class="menu_item {% if page == 'search' %} current_page_item {% endif %}"><a href="search.html" accesskey="4" title="">Search</a></li>
+                        {% if session['logged_in'] %} 
+                        <li class="menu_item"><a href="/logout">Logout {{session['username']}}</a></li> 
+                        {% else %}
+                        <li class="menu_item {% if page == 'login' %} current_page_item {% endif %}"><a href="login.html" accesskey="5"
+                                title="">Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

@@ -1011,6 +1011,7 @@ input:focus {
 	font-weight: 600;
 	width: 100%;
 	border: none;
+	border-bottom: #E36922 solid 2px;
 	outline: none;
 }
 
