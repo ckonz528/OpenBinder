@@ -10,14 +10,28 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 db = SQLAlchemy(app)
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-    privelege = db.Column(db.Integer, nullable=False)
+    privilege = db.Column(db.Integer, nullable=False)
+
+    notes = db.relationship('Note', backref='uploader', lazy=True)
 
     def __repr__(self):
-        return f'User {self.privelege}@{self.id} ({self.username})'
+        return f'<User {self.privilege}@{self.id} ({self.username})>'
+
+
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(256), nullable=False)
+    filehash = db.Column(db.String(128), nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<Note File {self.filename} ({self.user_id})>'
+
 
 @app.route('/favicon.ico')
 def favicon():
@@ -33,16 +47,29 @@ def home():
 @app.route('/login.html', methods=['GET', 'POST'])
 def login():
     if session.get('logged_in'):
-        return redirect(url_for('secret'))
+        flash('You are already logged in!')
+        return redirect(url_for('list_notes'))
     if request.method == 'POST':
-        success, admin = checkLogin(
+        success = checkLogin(
             request.form['username'], request.form['password'])
-        if success:
-            session['logged_in'] = True
+        if success is not None:
+            user_id, admin = success
+            session['logged_in'] = user_id
             session['admin'] = admin
-            return redirect(url_for('secret'))
+            return redirect(url_for('list_notes'))
         flash('Login failed :(')
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    if session.get('logged_in'):
+        session.pop('logged_in')
+        session.pop('admin')
+        flash('Successfully logged out')
+    else:
+        flash('You are not logged in')
+    return redirect(url_for('login'))
 
 
 @app.route('/secret.html')
@@ -56,30 +83,71 @@ def secret():
 
 @app.route('/upload.html', methods=['GET', 'POST'])
 def uploader():
+    if not session.get('logged_in'):
+        flash('You need to be logged in to upload notes!')
+        return redirect(url_for('login'))
     if request.method == 'POST':
         if 'note' not in request.files or request.files['note'].filename == '':
             flash('ERROR! Please select a file!')
             return redirect(request.url)
         file = request.files['note']
+
+        # get the filepath to save it to
         name, ext = os.path.splitext(file.filename)
-        filename = md5(bytes(name, encoding='utf-8')).digest().hex() + ext
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        unique_id = name + str(session['logged_in'])
+        filehash = md5(bytes(unique_id, encoding='utf-8')).digest().hex() + ext
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filehash)
+
+        # save the file
         file.save(path)
-        return redirect(url_for('uploaded_file', filename=filename))
+
+        # record it in the database
+        note = Note(
+            filename=file.filename,
+            filehash=filehash,
+            user_id=session['logged_in'])
+        db.session.add(note)
+        db.session.commit()
+
+        # serve the uploaded file
+        return redirect(url_for('list_notes'))
     return render_template('upload.html')
 
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
+@app.route('/view/<filename>')
+def view_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+
+@app.route('/delete/<filename>')
+def delete_file(filename):
+    note_to_delete = Note.query.filter_by(filehash=filename).first()
+    print(note_to_delete)
+    if note_to_delete is None:
+        flash('Could not find file to delete!')
+        return redirect(url_for('list_notes'))
+
+    db.session.delete(note_to_delete)
+    db.session.commit()
+    os.remove(os.path.join('uploads', filename))
+    flash('Note deleted!')
+
+    return redirect(url_for('list_notes'))
+
+
+@app.route('/list.html')
+def list_notes():
+    if session.get('logged_in'):
+        current_user = User.query.get(session['logged_in'])
+        return render_template('list.html', notes=current_user.notes)
+    flash('You need to be logged in to view this!')
+    return redirect(url_for('login'))
+
+
 def checkLogin(username, password):
-    valid_credentials = [
-        ('ckonz', 'tomato juice'),
-        ('admin', 'hunter1')
-    ]
-    admins = ['admin']
-    return (username, password) in valid_credentials, username in admins
+    user = User.query.filter_by(username=username).first()
+    if user is not None and user.password == password:
+        return user.id, user.privilege
 
 
 app.secret_key = str(time())

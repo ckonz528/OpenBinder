@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block pageContent %}
+<div id="page" class="container">
+    {% if notes|length == 0 %}
+    <h1>You have no notes yet! <a href="upload.html">Upload</a> some now!</h1>
+    {% else %}
+    <h1>Notes that you have uploaded:</h1>
+    <table>
+        {% for note in notes %}
+        <tr>
+            <td>{{note.filename}}</td>
+            <td><a href="view/{{note.filehash}}">View</a></td>
+            <td><a href="delete/{{note.filehash}}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="upload.html">Upload</a> some more notes!
+    {% endif %}
+</div>
+{% endblock %}
