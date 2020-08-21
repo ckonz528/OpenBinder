@@ -91,12 +91,12 @@ def uploader():
 
         # get the filepath to save it to
         name, ext = os.path.splitext(file.filename)
-        
+
         # verify that the file extension is valid
         if ext[1:].lower() not in ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg', 'gif', 'ppt', 'pptx', 'xlsx']:
             flash(f'File type {ext} not supported!')
             return redirect(request.url)
-        
+
         unique_id = name + str(session['logged_in'])
         filehash = md5encode(unique_id) + ext
         path = os.path.join(app.config['UPLOAD_FOLDER'], filehash)
@@ -132,7 +132,7 @@ def delete_file(filename):
 
     db.session.delete(note_to_delete)
     db.session.commit()
-    
+
     try:
         os.remove(os.path.join('uploads', filename))
     except:
@@ -153,13 +153,14 @@ def edit_file(filename):
     if note_to_edit is None:
         flash('Could not find note to edit!')
         return redirect(url_for('list_notes'))
-    
+
     if note_to_edit.user_id != session.get('logged_in'):
         flash('You do not have permission to edit this note!')
         return redirect(url_for('list_notes'))
 
     return render_template('edit.html', note=note_to_edit)
-    
+
+
 @app.route('/update', methods=['POST'])
 def update_note():
     if not session.get('logged_in'):
@@ -174,10 +175,9 @@ def update_note():
 
     note.tags = request.form['tags']
     db.session.commit()
-    
+
     flash('Note successfully edited!')
     return redirect(url_for('list_notes'))
-    
 
 
 @app.route('/list.html')
@@ -216,11 +216,15 @@ def register():
         elif password != confirm:
             flash('Passwords must match!')
         else:
-            user = User(username=username, password=md5encode(password), privilege=0)
+            user = User(
+                username=username,
+                password=md5encode(password),
+                privilege=0)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
     return render_template('register.html')
+
 
 def checkLogin(username, password):
     user = User.query.filter_by(username=username).first()
